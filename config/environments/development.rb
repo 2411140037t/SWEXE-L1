@@ -23,6 +23,10 @@ Rails.application.configure do
     config.public_file_server.headers = { "cache-control" => "public, max-age=#{2.days.to_i}" }
   else
     config.action_controller.perform_caching = false
+
+    # Codespaces等のプロキシ環境でOriginチェックが誤検知するのを防ぐ(開発環境のみ)
+    config.action_controller.forgery_protection_origin_check = false
+
   end
 
   # Change to :null_store to avoid any caching.
