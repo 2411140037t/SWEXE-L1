@@ -1,0 +1,30 @@
+<%= form_with model: book, data: { turbo: false } do |f| %>
+  <% if book.errors.any? %>
+    <div style="color: red;">
+      <ul>
+        <% book.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title, "タイトル" %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :author, "著者" %>
+    <%= f.text_field :author %>
+  </div>
+
+  <div>
+    <%= f.label :published_year, "出版年" %>
+    <%= f.number_field :published_year %>
+  </div>
+
+  <div>
+    <%= f.submit "保存" %>
+  </div>
+<% end %>
