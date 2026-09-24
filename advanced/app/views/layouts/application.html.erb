@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <title><%= content_for(:title) || "Swexe L1" %></title>
+    <title><%= content_for(:title) ? "#{content_for(:title)} | 本の管理" : "本の管理" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Swexe L1">
@@ -11,19 +11,35 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <%= link_to "📚 本の管理", root_path, class: "site-header__logo" %>
+        <nav class="site-header__nav">
+          <%= link_to "一覧", books_path %>
+          <%= link_to "＋ 新規登録", new_book_path, class: "btn btn--primary btn--sm" %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <%# flashメッセージ（成功=notice / 失敗=alert） %>
+      <% flash.each do |type, message| %>
+        <div class="flash flash--<%= type == "notice" ? "success" : "error" %>" role="alert">
+          <span class="flash__icon"><%= type == "notice" ? "✓" : "!" %></span>
+          <span><%= message %></span>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
   </body>
 </html>

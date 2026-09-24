@@ -1,6 +1,7 @@
-<%= form_with model: book, data: { turbo: false } do |f| %>
+<%= form_with model: book, class: "form", data: { turbo: false } do |f| %>
   <% if book.errors.any? %>
-    <div style="color: red;">
+    <div class="error-box">
+      <p class="error-box__title"><%= book.errors.count %>件のエラーがあります</p>
       <ul>
         <% book.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -9,22 +10,33 @@
     </div>
   <% end %>
 
-  <div>
-    <%= f.label :title, "タイトル" %>
-    <%= f.text_field :title %>
+  <div class="form__field <%= "form__field--error" if book.errors[:title].any? %>">
+    <%= f.label :title, class: "form__label" do %>タイトル <span class="required">必須</span><% end %>
+    <%= f.text_field :title, class: "form__input", placeholder: "例）吾輩は猫である", maxlength: 100 %>
+    <% book.errors.full_messages_for(:title).each do |msg| %>
+      <p class="form__error"><%= msg %></p>
+    <% end %>
   </div>
 
-  <div>
-    <%= f.label :author, "著者" %>
-    <%= f.text_field :author %>
+  <div class="form__field <%= "form__field--error" if book.errors[:author].any? %>">
+    <%= f.label :author, class: "form__label" do %>著者 <span class="required">必須</span><% end %>
+    <%= f.text_field :author, class: "form__input", placeholder: "例）夏目漱石", maxlength: 50 %>
+    <% book.errors.full_messages_for(:author).each do |msg| %>
+      <p class="form__error"><%= msg %></p>
+    <% end %>
   </div>
 
-  <div>
-    <%= f.label :published_year, "出版年" %>
-    <%= f.number_field :published_year %>
+  <div class="form__field <%= "form__field--error" if book.errors[:published_year].any? %>">
+    <%= f.label :published_year, class: "form__label" do %>出版年 <span class="required">必須</span><% end %>
+    <%= f.number_field :published_year, class: "form__input form__input--short", placeholder: "例）1905" %>
+    <p class="form__hint">西暦（1〜<%= Date.current.year %>）で入力してください</p>
+    <% book.errors.full_messages_for(:published_year).each do |msg| %>
+      <p class="form__error"><%= msg %></p>
+    <% end %>
   </div>
 
-  <div>
-    <%= f.submit "保存" %>
+  <div class="form__actions">
+    <%= f.submit class: "btn btn--primary" %>
+    <%= link_to "キャンセル", book.persisted? ? book_path(book) : books_path, class: "btn btn--ghost" %>
   </div>
 <% end %>

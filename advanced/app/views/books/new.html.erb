@@ -1,5 +1,11 @@
-<h1>本の新規登録</h1>
+<% content_for :title, "新規登録" %>
 
-<%= render "form", book: @book %>
+<div class="page-head">
+  <h1>本の新規登録</h1>
+</div>
 
-<%= link_to "一覧に戻る", books_path %>
+<div class="card">
+  <%= render "form", book: @book %>
+</div>
+
+<%= link_to "← 一覧に戻る", books_path, class: "back-link" %>

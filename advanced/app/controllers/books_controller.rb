@@ -1,9 +1,19 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
 
+  # 存在しないIDにアクセスされた場合は一覧に戻してメッセージを表示する
+  rescue_from ActiveRecord::RecordNotFound do
+    redirect_to books_path, alert: "指定された本が見つかりませんでした。"
+  end
+
   # GET /books
   def index
-    @books = Book.all
+    @keyword = params[:q].to_s.strip
+    @books = Book.order(:published_year, :id)
+    if @keyword.present?
+      like = "%#{Book.sanitize_sql_like(@keyword)}%"
+      @books = @books.where("title LIKE ? OR author LIKE ?", like, like)
+    end
   end
 
   # GET /books/:id
@@ -20,8 +30,9 @@ class BooksController < ApplicationController
     @book = Book.new(book_params)
 
     if @book.save
-      redirect_to @book, notice: "本を登録しました。"
+      redirect_to @book, notice: "「#{@book.title}」を登録しました。"
     else
+      flash.now[:alert] = "登録に失敗しました。入力内容を確認してください。"
       render :new, status: :unprocessable_entity
     end
   end
@@ -33,16 +44,20 @@ class BooksController < ApplicationController
   # PATCH/PUT /books/:id
   def update
     if @book.update(book_params)
-      redirect_to @book, notice: "本を更新しました。"
+      redirect_to @book, notice: "「#{@book.title}」を更新しました。"
     else
+      flash.now[:alert] = "更新に失敗しました。入力内容を確認してください。"
       render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /books/:id
   def destroy
-    @book.destroy
-    redirect_to books_path, notice: "本を削除しました。", status: :see_other
+    if @book.destroy
+      redirect_to books_path, notice: "「#{@book.title}」を削除しました。", status: :see_other
+    else
+      redirect_to books_path, alert: "削除に失敗しました。", status: :see_other
+    end
   end
 
   private

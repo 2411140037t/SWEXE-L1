@@ -1,7 +1,34 @@
-<h1><%= @book.title %></h1>
+<% content_for :title, @book.title %>
 
-<p><strong>著者:</strong> <%= @book.author %></p>
-<p><strong>出版年:</strong> <%= @book.published_year %></p>
+<div class="card detail">
+  <p class="detail__label">BOOK</p>
+  <h1 class="detail__title"><%= @book.title %></h1>
 
-<%= link_to "編集", edit_book_path(@book) %> |
-<%= link_to "一覧に戻る", books_path %>
+  <dl class="detail__list">
+    <div>
+      <dt>著者</dt>
+      <dd><%= @book.author %></dd>
+    </div>
+    <div>
+      <dt>出版年</dt>
+      <dd><%= @book.published_year %>年</dd>
+    </div>
+    <div>
+      <dt>登録日時</dt>
+      <dd><%= @book.created_at.strftime("%Y/%m/%d %H:%M") %></dd>
+    </div>
+    <div>
+      <dt>最終更新</dt>
+      <dd><%= @book.updated_at.strftime("%Y/%m/%d %H:%M") %></dd>
+    </div>
+  </dl>
+
+  <div class="detail__actions">
+    <%= link_to "編集する", edit_book_path(@book), class: "btn btn--primary" %>
+    <%= button_to "削除する", book_path(@book), method: :delete,
+          class: "btn btn--danger",
+          form: { data: { turbo_confirm: "「#{@book.title}」を削除しますか？" } } %>
+  </div>
+</div>
+
+<%= link_to "← 一覧に戻る", books_path, class: "back-link" %>
