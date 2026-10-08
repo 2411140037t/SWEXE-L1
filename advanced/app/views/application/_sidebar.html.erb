@@ -1,0 +1,41 @@
+<%# サイドバー：メニュー・登録状況・最近登録した本（どのページでも表示） %>
+<aside class="sidebar">
+  <section class="side-box">
+    <h2 class="side-box__title">メニュー</h2>
+    <ul class="side-menu">
+      <li><%= nav_link_to "📖 本の一覧", books_path, active: books_index_page? %></li>
+      <li><%= nav_link_to "✏️ 新規登録", new_book_path %></li>
+    </ul>
+  </section>
+
+  <section class="side-box">
+    <h2 class="side-box__title">登録状況</h2>
+    <div class="side-stats">
+      <div class="side-stats__item">
+        <span class="side-stats__num"><%= Book.count %></span>
+        <span class="side-stats__label">冊</span>
+      </div>
+      <div class="side-stats__item">
+        <span class="side-stats__num"><%= Book.distinct.count(:author) %></span>
+        <span class="side-stats__label">人の著者</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="side-box">
+    <h2 class="side-box__title">最近登録した本</h2>
+    <% books = recent_books %>
+    <% if books.any? %>
+      <ul class="side-recent">
+        <% books.each do |book| %>
+          <li>
+            <%= nav_link_to book.title, book_path(book) %>
+            <span class="side-recent__meta"><%= book.author %>・<%= short_date(book.created_at) %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="side-box__empty">まだ登録がありません</p>
+    <% end %>
+  </section>
+</aside>

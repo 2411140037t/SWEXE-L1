@@ -1,0 +1,7 @@
+<%# flashメッセージ（成功=notice / 失敗=alert） %>
+<% flash.each do |type, message| %>
+  <div class="flash flash--<%= type == "notice" ? "success" : "error" %>" role="alert">
+    <span class="flash__icon"><%= type == "notice" ? "✓" : "!" %></span>
+    <span><%= message %></span>
+  </div>
+<% end %>

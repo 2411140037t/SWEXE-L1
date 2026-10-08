@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
-    <title><%= content_for(:title) ? "#{content_for(:title)} | 本の管理" : "本の管理" %></title>
+    <title><%= page_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Swexe L1">
@@ -20,26 +20,20 @@
   </head>
 
   <body>
-    <header class="site-header">
-      <div class="container site-header__inner">
-        <%= link_to "📚 本の管理", root_path, class: "site-header__logo" %>
-        <nav class="site-header__nav">
-          <%= link_to "一覧", books_path %>
-          <%= link_to "＋ 新規登録", new_book_path, class: "btn btn--primary btn--sm" %>
-        </nav>
+    <div id="container">
+      <div id="header">
+        <%= render "header" %>
       </div>
-    </header>
-
-    <main class="container">
-      <%# flashメッセージ（成功=notice / 失敗=alert） %>
-      <% flash.each do |type, message| %>
-        <div class="flash flash--<%= type == "notice" ? "success" : "error" %>" role="alert">
-          <span class="flash__icon"><%= type == "notice" ? "✓" : "!" %></span>
-          <span><%= message %></span>
-        </div>
-      <% end %>
-
-      <%= yield %>
-    </main>
+      <div id="sidebar">
+        <%= render "sidebar" %>
+      </div>
+      <div id="content">
+        <%= render "flash" %>
+        <%= yield %>
+      </div>
+      <div id="footer">
+        <%= render "footer" %>
+      </div>
+    </div>
   </body>
 </html>

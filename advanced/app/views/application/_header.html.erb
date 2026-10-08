@@ -1,0 +1,12 @@
+<%# ヘッダー：ロゴとグローバルナビ（表示中のページは nav_link_to が強調する） %>
+<header class="site-header">
+  <div class="site-header__inner">
+    <%= link_to root_path, class: "site-header__logo" do %>
+      <span class="site-header__mark">📚</span>本の管理
+    <% end %>
+    <nav class="site-header__nav" aria-label="メインメニュー">
+      <%= nav_link_to "一覧", books_path, active: books_index_page? %>
+      <%= link_to "＋ 新規登録", new_book_path, class: "btn btn--primary btn--sm" %>
+    </nav>
+  </div>
+</header>

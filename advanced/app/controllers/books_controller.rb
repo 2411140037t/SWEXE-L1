@@ -30,7 +30,7 @@ class BooksController < ApplicationController
     @book = Book.new(book_params)
 
     if @book.save
-      redirect_to @book, notice: "「#{@book.title}」を登録しました。"
+      redirect_to book_path@book, notice: "「#{@book.title}」を登録しました。"
     else
       flash.now[:alert] = "登録に失敗しました。入力内容を確認してください。"
       render :new, status: :unprocessable_entity
@@ -44,7 +44,7 @@ class BooksController < ApplicationController
   # PATCH/PUT /books/:id
   def update
     if @book.update(book_params)
-      redirect_to @book, notice: "「#{@book.title}」を更新しました。"
+      redirect_to book_path@book, notice: "「#{@book.title}」を更新しました。"
     else
       flash.now[:alert] = "更新に失敗しました。入力内容を確認してください。"
       render :edit, status: :unprocessable_entity

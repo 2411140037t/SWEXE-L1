@@ -1,0 +1,11 @@
+<%# フッター：サイト内リンクとコピーライト %>
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <nav class="site-footer__nav" aria-label="フッターメニュー">
+      <%= link_to "トップ", root_path %>
+      <%= link_to "本の一覧", books_path %>
+      <%= link_to "新規登録", new_book_path %>
+    </nav>
+    <p class="site-footer__copy">&copy; <%= Date.current.year %> 本の管理 ／ ソフトウェア開発演習</p>
+  </div>
+</footer>
